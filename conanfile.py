@@ -8,8 +8,8 @@ import os
 class ProtobufConan(ConanFile):
     name = "protoc_installer"
     version = "3.6.1"
-    url = "https://github.com/bincrafters/conan-protoc_instaler"
-    homepage = "https://github.com/google/protobuf"
+    url = "https://github.com/bincrafters/conan-protoc_installer"
+    homepage = "https://github.com/protocolbuffers/protobuf"
     author = "Bincrafters <bincrafters@gmail.com>"
     description = "protoc is a compiler for protocol buffers definitions files. It can can generate C++, Java " \
                   "and Python source code for the classes defined in PROTO_FILE."
