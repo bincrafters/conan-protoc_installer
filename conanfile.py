@@ -42,9 +42,10 @@ class ProtobufConan(ConanFile):
     def package(self):
         # CMake install is not used intentionally - copy only executable file
         self.copy(pattern='protoc*', src=os.path.join(self.build_subfolder, 'bin'), dst='bin')
+        self.copy(pattern='*.proto', src=os.path.join(self.source_subfolder, 'src'), dst='include')
         self.copy("LICENSE", dst="licenses", src=self.source_subfolder)
 
     def package_info(self):
         self.env_info.PATH.append(os.path.join(self.package_folder, 'bin'))
-        protoc = 'prooc.exe' if self.settings.os_build == 'Windows' else 'protoc'
+        protoc = 'protoc.exe' if self.settings.os_build == 'Windows' else 'protoc'
         self.env_info.PROTOC_BIN = os.path.normpath(os.path.join(self.package_folder, 'bin', protoc))
