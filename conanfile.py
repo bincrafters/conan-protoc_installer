@@ -7,7 +7,7 @@ import os
 
 class ProtobufConan(ConanFile):
     name = "protoc_installer"
-    version = "3.6.1"
+    version = "3.5.1"
     url = "https://github.com/bincrafters/conan-protoc_installer"
     homepage = "https://github.com/protocolbuffers/protobuf"
     author = "Bincrafters <bincrafters@gmail.com>"
