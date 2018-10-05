@@ -41,7 +41,8 @@ class ProtobufConan(ConanFile):
 
     def package(self):
         # CMake install is not used intentionally - copy only executable file
-        self.copy(pattern='protoc*', src=os.path.join(self.build_subfolder, 'bin'), dst='bin')
+        self.copy(pattern='protoc', src=os.path.join(self.build_subfolder, 'bin'), dst='bin')
+        self.copy(pattern='protoc.exe', src=os.path.join(self.build_subfolder, 'bin'), dst='bin')
         self.copy(pattern='*.proto', src=os.path.join(self.source_subfolder, 'src'), dst='include')
         self.copy("LICENSE", dst="licenses", src=self.source_subfolder)
 
