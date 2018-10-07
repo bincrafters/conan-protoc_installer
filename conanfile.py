@@ -29,6 +29,12 @@ class ProtobufConan(ConanFile):
 
     def configure_cmake(self):
         cmake = CMake(self)
+        if self.settings.arch_build == 'x86':
+            cmake.definitions['CMAKE_C_FLAGS'] = '-m32'
+            cmake.definitions['CMAKE_CXX_FLAGS'] = '-m32'
+        elif self.settings.arch_build == 'x86_64':
+            cmake.definitions['CMAKE_C_FLAGS'] = '-m64'
+            cmake.definitions['CMAKE_CXX_FLAGS'] = '-m64'
         cmake.definitions["CMAKE_INSTALL_LIBDIR"] = "lib"
         cmake.definitions["protobuf_BUILD_TESTS"] = False
         cmake.definitions["protobuf_WITH_ZLIB"] = False
