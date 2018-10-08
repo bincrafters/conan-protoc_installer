@@ -2,7 +2,7 @@
 
 | Bintray | Windows | Linux & macOS |
 |:--------:|:---------:|:-----------------:|
-|[![Download](https://api.bintray.com/packages/bincrafters/public-conan/protoc_installer%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/protoc_installer%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-protoc-installer?&svg=true)](https://ci.appveyor.com/project/bincrafters/conan-protoc-installer)|[![Build Status](https://travis-ci.org/bincrafters/conan-protoc_installer.svg)](https://travis-ci.org/bincrafters/conan-protoc_installer)|
+|[![Download](https://api.bintray.com/packages/bincrafters/public-conan/protoc_installer%3Abincrafters/images/download.svg) ](https://bintray.com/bincrafters/public-conan/protoc_installer%3Abincrafters/_latestVersion)|[![Build status](https://ci.appveyor.com/api/projects/status/github/bincrafters/conan-protoc-installer?svg=true)](https://ci.appveyor.com/project/bincrafters/conan-protoc-installer)|[![Build Status](https://travis-ci.org/bincrafters/conan-protoc_installer.svg)](https://travis-ci.org/bincrafters/conan-protoc_installer)|
 
 ## Conan.io Information
 
