@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from conans import ConanFile, tools, RunEnvironment
 import os
+from conans import ConanFile, tools, RunEnvironment
 
 
 class TestPackageConan(ConanFile):
