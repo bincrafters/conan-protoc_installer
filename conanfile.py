@@ -25,8 +25,7 @@ class ProtobufConan(ConanFile):
 
     def source(self):
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version))
-        extracted_dir = "protobuf-" + self.version
-        os.rename(extracted_dir, self._source_subfolder)
+        os.rename("protobuf-%s" % self.version, self._source_subfolder)
 
     def _configure_cmake(self):
         cmake = CMake(self)
