@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-from conans import ConanFile, CMake, tools
 import os
+from conans import ConanFile, CMake, tools
 
 
 class ProtobufConan(ConanFile):
@@ -10,10 +10,11 @@ class ProtobufConan(ConanFile):
     version = "3.6.1"
     url = "https://github.com/bincrafters/conan-protoc_installer"
     homepage = "https://github.com/protocolbuffers/protobuf"
+    topics = ("protocol-buffers", "protocol-compiler", "serialization", "rpc")
     author = "Bincrafters <bincrafters@gmail.com>"
-    description = "protoc is a compiler for protocol buffers definitions files. It can can generate C++, Java " \
-                  "and Python source code for the classes defined in PROTO_FILE."
-    license = "BSD"
+    description = ("protoc is a compiler for protocol buffers definitions files. It can can "
+                   "generate C++, Java and Python source code for the classes defined in PROTO_FILE.")
+    license = "BSD-3-Clause"
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt"]
     generators = "cmake"
@@ -44,7 +45,7 @@ class ProtobufConan(ConanFile):
         cmake.build()
 
     def package(self):
-        # CMake install is not used intentionally - copy only executable file
+        # INFO: CMake install is not used intentionally - copy only executable file
         self.copy(pattern="protoc", src=os.path.join(self._build_subfolder, "bin"), dst="bin")
         self.copy(pattern="protoc.exe", src=os.path.join(self._build_subfolder, "bin"), dst="bin")
         self.copy(pattern="*.proto", src=os.path.join(self._source_subfolder, "src"), dst="include")
