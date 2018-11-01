@@ -1,10 +1,10 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-
+import os
 from bincrafters import build_template_installer
 from bincrafters import build_shared
-import os
+
 
 if __name__ == "__main__":
 
