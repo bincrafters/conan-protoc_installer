@@ -1,13 +1,18 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
-
-import os
-from conans import ConanFile, tools, RunEnvironment
+from conans import ConanFile, CMake
 
 
 class TestPackageConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
+    generators = "cmake"
+
+    def build(self):
+        cmake = CMake(self)
+        cmake.definitions["protobuf_VERBOSE"] = True
+        cmake.definitions["protobuf_MODULE_COMPATIBLE"] = True
+        cmake.configure()
+        cmake.build()
 
     def test(self):
-        with tools.environment_append(RunEnvironment(self).vars):
-            self.run("protoc --version")
+        self.run("protoc --version", run_environment=True)
