@@ -43,6 +43,8 @@ class ProtobufConan(ConanFile):
         self.copy("LICENSE", dst="licenses", src=self._source_subfolder)
         cmake = self._configure_cmake()
         cmake.install()
+        cmake_target = os.path.join(self.package_folder, "lib", "cmake", "protoc", "protoc-config-version.cmake")
+        tools.replace_in_file(cmake_target, 'if(CMAKE_SIZEOF_VOID_P AND "8")', "if(FALSE)")
 
     def package_info(self):
         self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
