@@ -16,7 +16,7 @@ class ProtobufConan(ConanFile):
                    "generate C++, Java and Python source code for the classes defined in PROTO_FILE.")
     license = "BSD-3-Clause"
     exports = ["LICENSE.md"]
-    exports_sources = ["CMakeLists.txt"]
+    exports_sources = ["CMakeLists.txt", "protobuf.patch"]
     generators = "cmake"
     settings = "os_build", "arch_build"
     short_paths = True
@@ -29,27 +29,20 @@ class ProtobufConan(ConanFile):
 
     def _configure_cmake(self):
         cmake = CMake(self)
-        if self.settings.arch_build == "x86":
-            cmake.definitions["CMAKE_C_FLAGS"] = "-m32"
-            cmake.definitions["CMAKE_CXX_FLAGS"] = "-m32"
-        elif self.settings.arch_build == "x86_64":
-            cmake.definitions["CMAKE_C_FLAGS"] = "-m64"
-            cmake.definitions["CMAKE_CXX_FLAGS"] = "-m64"
         cmake.definitions["protobuf_BUILD_TESTS"] = False
         cmake.definitions["protobuf_WITH_ZLIB"] = False
         cmake.configure(build_folder=self._build_subfolder)
         return cmake
 
     def build(self):
+        tools.patch(base_path=self._source_subfolder, patch_file="protobuf.patch")
         cmake = self._configure_cmake()
         cmake.build()
 
     def package(self):
-        # INFO: CMake install is not used intentionally - copy only executable file
-        self.copy(pattern="protoc", src=os.path.join(self._build_subfolder, "bin"), dst="bin")
-        self.copy(pattern="protoc.exe", src=os.path.join(self._build_subfolder, "bin"), dst="bin")
-        self.copy(pattern="*.proto", src=os.path.join(self._source_subfolder, "src"), dst="include")
         self.copy("LICENSE", dst="licenses", src=self._source_subfolder)
+        cmake = self._configure_cmake()
+        cmake.install()
 
     def package_info(self):
         self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
