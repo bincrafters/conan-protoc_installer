@@ -45,7 +45,7 @@ class ProtobufConan(ConanFile):
         cmake.install()
         cmake_dir = os.path.join(self.package_folder, "cmake") if self.settings.os_build == "Windows" else os.path.join(self.package_folder, "lib", "cmake")
         cmake_target = os.path.join(cmake_dir, "protoc", "protoc-config-version.cmake")
-        tools.replace_in_file(cmake_target, 'if(CMAKE_SIZEOF_VOID_P AND "8")', "if(FALSE)")
+        tools.replace_in_file(cmake_target, "# if the installed", "return() #")
 
     def package_info(self):
         self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
