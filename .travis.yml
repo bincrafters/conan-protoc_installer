@@ -27,4 +27,4 @@ script:
   - ./.ci/run.sh
 
 after_success:
-  - if [ "${ARCH}" == "x86_64" ]; then python .ci/testing.py; fi
+  - python .ci/testing.py
