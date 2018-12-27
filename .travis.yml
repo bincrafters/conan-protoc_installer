@@ -27,4 +27,4 @@ script:
   - ./.ci/run.sh
 
 after_success:
-  - if [ "${TRAVIS_PULL_REQUEST}" == "false" ] && [ "${TRAVIS_BRANCH}" == "stable/3.6.1" ] && [ "${ARCH}" == "x86_64" ]; then chmod +x .ci/testing.sh && .ci/testing.sh; fi
+  - python .ci/testing.py
