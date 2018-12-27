@@ -1,8 +1,8 @@
 diff --git a/cmake/install.cmake b/cmake/install.cmake
-index 82036cb..71499ab 100644
+index 441bf55..8acf3fb 100644
 --- a/cmake/install.cmake
 +++ b/cmake/install.cmake
-@@ -1,54 +1,10 @@
+@@ -1,50 +1,8 @@
  include(GNUInstallDirs)
  
 -configure_file(${CMAKE_CURRENT_SOURCE_DIR}/protobuf.pc.cmake
@@ -10,12 +10,10 @@ index 82036cb..71499ab 100644
 -configure_file(${CMAKE_CURRENT_SOURCE_DIR}/protobuf-lite.pc.cmake
 -               ${CMAKE_CURRENT_BINARY_DIR}/protobuf-lite.pc @ONLY)
 -
--set(_protobuf_libraries libprotobuf-lite libprotobuf)
- if (protobuf_BUILD_PROTOC_BINARIES)
--    list(APPEND _protobuf_libraries libprotoc)
--endif (protobuf_BUILD_PROTOC_BINARIES)
--
--foreach(_library ${_protobuf_libraries})
+-foreach(_library
+-  libprotobuf-lite
+-  libprotobuf
+-  libprotoc)
 -  set_property(TARGET ${_library}
 -    PROPERTY INTERFACE_INCLUDE_DIRECTORIES
 -    $<BUILD_INTERFACE:${protobuf_source_dir}/src>
@@ -26,11 +24,9 @@ index 82036cb..71499ab 100644
 -    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT ${_library})
 -endforeach()
 -
--if (protobuf_BUILD_PROTOC_BINARIES)
--  install(TARGETS protoc EXPORT protobuf-targets
-+  install(TARGETS protoc EXPORT protoc-targets
-     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT protoc)
- endif (protobuf_BUILD_PROTOC_BINARIES)
+-install(TARGETS protoc EXPORT protobuf-targets
++install(TARGETS protoc EXPORT protoc-targets
+   RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT protoc)
  
 -install(FILES ${CMAKE_CURRENT_BINARY_DIR}/protobuf.pc ${CMAKE_CURRENT_BINARY_DIR}/protobuf-lite.pc DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
 -
@@ -58,7 +54,7 @@ index 82036cb..71499ab 100644
  # Internal function for parsing auto tools scripts
  function(_protobuf_auto_list FILE_NAME VARIABLE)
    file(STRINGS ${FILE_NAME} _strings)
-@@ -89,48 +45,35 @@ endforeach()
+@@ -85,40 +43,34 @@ endforeach()
  # Install configuration
  set(_cmakedir_desc "Directory relative to CMAKE_INSTALL to install the cmake configuration files")
  if(NOT MSVC)
@@ -83,22 +79,12 @@ index 82036cb..71499ab 100644
 +  ${CMAKE_INSTALL_CMAKEDIR}/protoc-options.cmake @ONLY)
  
  # Allows the build directory to be used as a find directory.
- 
--if (protobuf_BUILD_PROTOC_BINARIES)
--  export(TARGETS libprotobuf-lite libprotobuf libprotoc protoc
--    NAMESPACE protobuf::
--    FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
--  )
--else (protobuf_BUILD_PROTOC_BINARIES)
--  export(TARGETS libprotobuf-lite libprotobuf
--    NAMESPACE protobuf::
--    FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
--  )
--endif (protobuf_BUILD_PROTOC_BINARIES)
+-export(TARGETS libprotobuf-lite libprotobuf libprotoc protoc
 +export(TARGETS protoc
-+  NAMESPACE protobuf::
+   NAMESPACE protobuf::
+-  FILE ${CMAKE_INSTALL_CMAKEDIR}/protobuf-targets.cmake
 +  FILE ${CMAKE_INSTALL_CMAKEDIR}/protoc-targets.cmake
-+)
+ )
  
 -install(EXPORT protobuf-targets
 +install(EXPORT protoc-targets
@@ -121,7 +107,7 @@ index 82036cb..71499ab 100644
 -    COMPONENT protobuf-examples)
 -endif()
 diff --git a/cmake/protobuf-config.cmake.in b/cmake/protobuf-config.cmake.in
-index acedcc7..e4bdef4 100644
+index fd67edc..886590c 100644
 --- a/cmake/protobuf-config.cmake.in
 +++ b/cmake/protobuf-config.cmake.in
 @@ -1,11 +1,11 @@
