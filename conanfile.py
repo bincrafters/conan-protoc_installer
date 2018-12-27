@@ -10,13 +10,13 @@ class ProtobufConan(ConanFile):
     version = "3.5.2"
     url = "https://github.com/bincrafters/conan-protoc_installer"
     homepage = "https://github.com/protocolbuffers/protobuf"
-    author = "Bincrafters <bincrafters@gmail.com>"
     topics = ("protocol-buffers", "protocol-compiler", "serialization", "rpc")
+    author = "Bincrafters <bincrafters@gmail.com>"
     description = ("protoc is a compiler for protocol buffers definitions files. It can can "
                    "generate C++, Java and Python source code for the classes defined in PROTO_FILE.")
     license = "BSD-3-Clause"
     exports = ["LICENSE.md"]
-    exports_sources = ["CMakeLists.txt"]
+    exports_sources = ["CMakeLists.txt", "protobuf.patch"]
     generators = "cmake"
     settings = "os_build", "arch_build"
     short_paths = True
@@ -25,33 +25,30 @@ class ProtobufConan(ConanFile):
 
     def source(self):
         tools.get("{0}/archive/v{1}.tar.gz".format(self.homepage, self.version))
-        extracted_dir = "protobuf-" + self.version
-        os.rename(extracted_dir, self._source_subfolder)
+        os.rename("protobuf-%s" % self.version, self._source_subfolder)
 
     def _configure_cmake(self):
         cmake = CMake(self)
-        if self.settings.arch_build == 'x86':
-            cmake.definitions['CMAKE_C_FLAGS'] = '-m32'
-            cmake.definitions['CMAKE_CXX_FLAGS'] = '-m32'
-        elif self.settings.arch_build == 'x86_64':
-            cmake.definitions['CMAKE_C_FLAGS'] = '-m64'
-            cmake.definitions['CMAKE_CXX_FLAGS'] = '-m64'
         cmake.definitions["protobuf_BUILD_TESTS"] = False
         cmake.definitions["protobuf_WITH_ZLIB"] = False
         cmake.configure(build_folder=self._build_subfolder)
         return cmake
 
     def build(self):
+        tools.patch(base_path=self._source_subfolder, patch_file="protobuf.patch")
         cmake = self._configure_cmake()
         cmake.build()
 
     def package(self):
-        # INFO: CMake install is not used intentionally - copy only executable file
-        self.copy(pattern='protoc*', src=os.path.join(self._build_subfolder, 'bin'), dst='bin')
-        self.copy(pattern='*.proto', src=os.path.join(self._source_subfolder, 'src'), dst='include')
         self.copy("LICENSE", dst="licenses", src=self._source_subfolder)
+        cmake = self._configure_cmake()
+        cmake.install()
+        cmake_dir = os.path.join(self.package_folder, "cmake") if self.settings.os_build == "Windows" \
+                    else os.path.join(self.package_folder, "lib", "cmake", "protoc")
+        cmake_target = os.path.join(cmake_dir, "protoc-config-version.cmake")
+        tools.replace_in_file(cmake_target, "# if the installed", "return() #")
 
     def package_info(self):
-        self.env_info.PATH.append(os.path.join(self.package_folder, 'bin'))
-        protoc = 'protoc.exe' if self.settings.os_build == 'Windows' else 'protoc'
-        self.env_info.PROTOC_BIN = os.path.normpath(os.path.join(self.package_folder, 'bin', protoc))
+        self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
+        protoc = "protoc.exe" if self.settings.os_build == "Windows" else "protoc"
+        self.env_info.PROTOC_BIN = os.path.normpath(os.path.join(self.package_folder, "bin", protoc))
