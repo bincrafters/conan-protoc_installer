@@ -13,11 +13,17 @@ if __name__ == "__main__":
         if ci_manager.is_travis():
             json_data = {"request": {"branch": "release/3.6.1"}}
             headers = {"Authorization": "token %s" % os.getenv("TRAVIS_TOKEN"), "Travis-API-Version": "3"}
-            requests.post(url="https://api.travis-ci.com/repo/bincrafters%2Fprotobuf-integration-test/requests", json=json_data, headers=headers)
+            response = requests.post(url="https://api.travis-ci.com/repo/bincrafters%2Fprotobuf-integration-test/requests", json=json_data, headers=headers)
+            if not response.ok:
+                raise Exception("ERROR: Could not trigger a new build: %s" % response.text)
+            print(response.text)
         elif ci_manager.is_appveyor():
             json_data = {"accountName":"BinCrafters", "projectSlug": "protobuf-integration-test", "branch": "release/3.6.1"}
             headers = {"Authorization": "Bearer %s" % os.getenv("APPVEYOR_TOKEN")}
             requests.post(url="https://ci.appveyor.com/api/builds", json=json_data, headers=headers)
+            if not response.ok:
+                raise Exception("ERROR: Could not trigger a new build: %s" % response.text)
+            print(response.text)
         else:
             print("WARNING: No CI manager detected")
     else:
