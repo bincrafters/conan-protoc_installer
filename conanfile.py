@@ -7,7 +7,7 @@ from conans import ConanFile, CMake, tools
 
 class ProtobufConan(ConanFile):
     name = "protoc_installer"
-    version = "3.6.1"
+    version = "3.3.0"
     url = "https://github.com/bincrafters/conan-protoc_installer"
     homepage = "https://github.com/protocolbuffers/protobuf"
     topics = ("protocol-buffers", "protocol-compiler", "serialization", "rpc")
