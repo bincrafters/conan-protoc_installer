@@ -5,12 +5,10 @@ from conans import ConanFile, CMake
 
 class TestPackageConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch"
-    generators = "cmake"
+    generators = "cmake_paths"
 
     def build(self):
         cmake = CMake(self)
-        cmake.definitions["protobuf_VERBOSE"] = True
-        cmake.definitions["protobuf_MODULE_COMPATIBLE"] = True
         cmake.configure()
         cmake.build()
 
