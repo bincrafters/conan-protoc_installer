@@ -121,7 +121,7 @@ index 82036cb..71499ab 100644
 -    COMPONENT protobuf-examples)
 -endif()
 diff --git a/cmake/protobuf-config.cmake.in b/cmake/protobuf-config.cmake.in
-index acedcc7..e4bdef4 100644
+index acedcc7..2a062a5 100644
 --- a/cmake/protobuf-config.cmake.in
 +++ b/cmake/protobuf-config.cmake.in
 @@ -1,11 +1,11 @@
@@ -138,6 +138,15 @@ index acedcc7..e4bdef4 100644
  
  function(protobuf_generate)
    include(CMakeParseArguments)
+@@ -100,7 +100,7 @@ function(protobuf_generate)
+       OUTPUT ${_generated_srcs}
+       COMMAND  protobuf::protoc
+       ARGS --${protobuf_generate_LANGUAGE}_out ${_dll_export_decl}${CMAKE_CURRENT_BINARY_DIR} ${_protobuf_include_path} ${_abs_file}
+-      DEPENDS ${ABS_FIL} protobuf::protoc
++      DEPENDS ${_abs_file} protobuf::protoc
+       COMMENT "Running ${protobuf_generate_LANGUAGE} protocol buffer compiler on ${_proto}"
+       VERBATIM )
+   endforeach()
 @@ -117,5 +117,5 @@ endfunction()
  
  # CMake FindProtobuf module compatible file
