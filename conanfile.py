@@ -18,7 +18,7 @@ class ProtobufConan(ConanFile):
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt", "protobuf.patch"]
     generators = "cmake"
-    settings = "os_build", "arch_build", "compiler"
+    settings = "compiler", "arch", "os_build", "arch_build"
     short_paths = True
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
@@ -35,6 +35,8 @@ class ProtobufConan(ConanFile):
         cmake = CMake(self)
         cmake.definitions["protobuf_BUILD_TESTS"] = False
         cmake.definitions["protobuf_WITH_ZLIB"] = False
+        if self.settings.compiler == "Visual Studio":
+            cmake.definitions["protobuf_MSVC_STATIC_RUNTIME"] = "MT" in self.settings.compiler.runtime
         cmake.configure(build_folder=self._build_subfolder)
         return cmake
 
@@ -49,6 +51,8 @@ class ProtobufConan(ConanFile):
         cmake.install()
 
     def package_id(self):
+        self.info.settings.arch_build = self.info.settings.arch
+        del self.info.settings.arch
         del self.info.settings.compiler
 
     def package_info(self):
