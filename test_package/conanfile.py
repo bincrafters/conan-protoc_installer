@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from conans import ConanFile, CMake
+from conans import ConanFile, CMake, tools
 
 
 class TestPackageConan(ConanFile):
@@ -14,4 +14,5 @@ class TestPackageConan(ConanFile):
         cmake.build()
 
     def test(self):
-        self.run("protoc --version", run_environment=True)
+        if not tools.cross_building(self.settings):
+            self.run("protoc --version", run_environment=True)

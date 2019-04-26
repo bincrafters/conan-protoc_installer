@@ -51,9 +51,8 @@ class ProtobufConan(ConanFile):
         cmake.install()
 
     def package_id(self):
-        self.info.settings.arch_build = self.info.settings.arch
-        del self.info.settings.arch
         del self.info.settings.compiler
+        del self.info.settings.arch
 
     def package_info(self):
         self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
