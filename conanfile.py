@@ -18,7 +18,7 @@ class ProtobufConan(ConanFile):
     exports = ["LICENSE.md"]
     exports_sources = ["CMakeLists.txt", "protobuf.patch"]
     generators = "cmake"
-    settings = "compiler", "os_build", "arch_build"
+    settings = "compiler", "arch", "os_build", "arch_build"
     short_paths = True
     _source_subfolder = "source_subfolder"
     _build_subfolder = "build_subfolder"
@@ -52,6 +52,7 @@ class ProtobufConan(ConanFile):
 
     def package_id(self):
         del self.info.settings.compiler
+        del self.info.settings.arch
 
     def package_info(self):
         self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
